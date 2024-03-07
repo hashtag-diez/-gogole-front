@@ -1,0 +1,70 @@
+:root {
+  font-family: Inter;
+  line-height: 1.5;
+  font-weight: 400;
+
+  background-color: #fefbf9;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+header{
+  padding: 1rem 2rem;
+}
+h2{
+  font-size: 3rem;
+  margin: 0;
+  font-weight: 700;
+}
+input{
+  width: 20%;
+  outline: 0;
+  border: 0;
+  background-color: inherit;
+  border-bottom: 3px solid black;
+  padding: 1rem;
+  font-size: 1.5rem;
+  padding-left: 0;
+  padding-bottom: 0.6rem;
+}
+
+ul{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4rem;
+  justify-content: space-between;
+}
+
+li{
+  list-style: none;
+  width: 30%;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-end;
+}
+li img{
+  border-radius: 5%;
+  box-shadow: -1px -12px 36px 10px rgba(119,119,128,0.2);
+}
+
+legend{
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  align-items: flex-start;
+}
+
+.titre{
+  font-size: 1.35rem;
+  font-weight: bold;
+}
+.theme{
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  background-color: black;
+  font-weight: bold;
+  color: white;
+}
