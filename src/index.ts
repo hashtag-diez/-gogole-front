@@ -23,9 +23,15 @@ input?.addEventListener('input', debounce(async (event: Event) => {
     }
     
 }))
+input?.addEventListener('keydown', (e: any) => {
+    if(e.key === 'Enter') {
+        e.preventDefault()
+        fetchBooksSearch(e.target.value)
+    }
+})
 
 // Build books
-export const buildBook = (img: string, title: string, author: string, theme: string, bookId: number) => {
+export const buildBook = (img: string, title: string, author: string, bookId: number) => {
     const book = document.createElement("li")
     const image = document.createElement("img")
     const legend  = document.createElement("legend")
@@ -53,7 +59,7 @@ const fetchBooks = async () => {
         books.forEach((book: Book) => {
             const authors = JSON.parse(book.author)[0]
             const title = book.title.length > 30 ? book.title.slice(0, 30) + "..." : book.title
-            ul.appendChild(buildBook(book.imagepath, title, authors ? authors.name : "Auhtor undefined" , "theme", book.id))      
+            ul.appendChild(buildBook(book.imagepath, title, authors ? authors.name : "Auhtor undefined" , book.id))      
         });
     } 
 }
@@ -70,7 +76,7 @@ const fetchBooksSearch = async (query: string) => {
             books.forEach((book: Book) => {
                 const authors = JSON.parse(book.author)[0]
                 const title = book.title.length > 30 ? book.title.slice(0, 30) + "..." : book.title
-                ul.appendChild(buildBook(book.imagepath, title, authors ? authors.name : "Auhtor undefined" , "theme", book.id))      
+                ul.appendChild(buildBook(book.imagepath, title, authors ? authors.name : "Auhtor undefined" , book.id))      
             });
         }
         loading.innerHTML = ""
@@ -83,7 +89,10 @@ export const redirectToBookPage = (bookId: number) => {
     window.location.href = bookPageUrl;
 }
 
-window.addEventListener("load", fetchBooks)
+window.addEventListener("load", () =>{
+    if(input!=null && (input as HTMLInputElement).value.length>0) fetchBooksSearch((input as HTMLInputElement).value)
+    else fetchBooks()
+})
 const showmoreButton = document.querySelector("button")
 showmoreButton?.addEventListener("click", () => {
     page++

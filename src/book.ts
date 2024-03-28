@@ -22,20 +22,9 @@ const buildSuggestions = (suggestions: Book[]) => {
       suggestions.forEach(suggestion => {
           const li = document.createElement("li")
           const image = document.createElement("img")
-          const legend  = document.createElement("legend")
-          const bookTitle = document.createElement("span")
-          const bookAuthor = document.createElement("span")
-          const authors = JSON.parse(suggestion.author)[0]
-          bookTitle.className = "titre"
-          bookTitle.textContent = suggestion.title
-          bookAuthor.className = "author"
-          bookAuthor.textContent = authors ? authors.name : "Auhtor undefined"
-          legend.appendChild(bookTitle)
-          legend.appendChild(bookAuthor)
           image.src = suggestion.imagepath
           image.addEventListener("click", () => redirectToBookPage(suggestion.id))
           li.appendChild(image)
-          li.appendChild(legend)
           ul.appendChild(li)
       })
     }
