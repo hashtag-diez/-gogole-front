@@ -17,6 +17,10 @@ main{
   align-items: center;
 }
 
+body{
+  margin: 0px;
+}
+
 header{
   padding: 1rem 2rem;
 }
@@ -24,6 +28,8 @@ h2{
   font-size: 3rem;
   margin: 0;
   font-weight: 700;
+  width: fit-content;
+  cursor: pointer;
 }
 input{
   width: 20%;
@@ -56,7 +62,7 @@ li img, .book img{
   border-radius: 5%;
   box-shadow: -1px -12px 36px 10px rgba(119,119,128,0.2);
   cursor: pointer;
-}
+} 
 
 legend{
   display: flex;
@@ -99,10 +105,50 @@ button{
   width: 50%;
   display: flex;
   gap: 5rem;
-  align-items: flex-end;
-  /* margin-bottom: 1rem; */
+  align-items: flex-start;
 }
 .suggestions {
   margin-top: 1rem;
-  border-top: solid rgba(119,119,128,0.2) 0.1rem;
+  background-color: rgb(254 248 250);
+  border-radius: 5%;
+  display: flex;
+  flex-direction: column;
+  width: 100%; 
+ 
+}
+
+.suggestions-heading {
+  font-size: 1.25rem;
+  margin: 0;
+  font-weight: 700;
+  display: flex;
+  justify-content: center; 
+  text-decoration: underline 1px;
+  text-underline-offset: 0.5rem;
+  padding-bottom: 2rem;
+}
+
+.suggestions-list {
+  overflow-x: auto; 
+  white-space: nowrap; 
+  width: 100%; 
+}
+
+.suggestions-list ul {
+  padding: 0;
+  list-style: none; 
+  display: flex; 
+  flex-wrap: nowrap;
+  gap: 4rem;
+  justify-content: space-between;
+}
+
+.suggestions-list ul li {
+  margin-right: 20px; 
+  margin-left: 20px;
+}
+
+.suggestions-list li img {
+  max-height: 15rem;
+  box-shadow: none;
 }

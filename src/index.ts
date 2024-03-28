@@ -1,5 +1,7 @@
 import { Book } from "./types.js"
 
+
+// Debounce function
 const debounce = (callback: (args: any) => void, delay: number = 1000) => {
     let timoutId: ReturnType<typeof setTimeout>;
     return function (this: any, event: Event){
@@ -22,22 +24,19 @@ input?.addEventListener('input', debounce(async (event: Event) => {
     
 }))
 
-const buildBook = (img: string, title: string, author: string, theme: string, bookId: number) => {
+// Build books
+export const buildBook = (img: string, title: string, author: string, theme: string, bookId: number) => {
     const book = document.createElement("li")
     const image = document.createElement("img")
     const legend  = document.createElement("legend")
     const bookTitle = document.createElement("span")
     const bookAuthor = document.createElement("span")
-    // const bookTheme = document.createElement("span")
     bookTitle.className = "titre"
     bookTitle.textContent = title
     bookAuthor.className = "author"
     bookAuthor.textContent = author
-    // bookTheme.className = "theme"
-    // bookTheme.textContent = theme
     legend.appendChild(bookAuthor)
     legend.appendChild(bookTitle)
-    // legend.appendChild(bookTheme)
     image.src = img
     image.addEventListener("click", () => redirectToBookPage(bookId))
     book.appendChild(image)
@@ -45,36 +44,43 @@ const buildBook = (img: string, title: string, author: string, theme: string, bo
     return book
 }
 
-const redirectToBookPage = (bookId: number) => {
-    const bookPageUrl = `./src/pages/book.html?bookId=${bookId}`;
-    window.location.href = bookPageUrl;
-}
-
 let page = 1
-let maxPages: number = -1
 const ul = document.querySelector("ul")
 const fetchBooks = async () => {
     const res = await fetch("http://localhost:3333/books/?page="+page)
     const books = await res.json()
-    if (maxPages == -1) maxPages = books[1]/9
-    if(ul!=null) {
-        books[0].forEach((book: Book) => {
+    if(ul!=null && books.length>0) {
+        books.forEach((book: Book) => {
             const authors = JSON.parse(book.author)[0]
-            ul.appendChild(buildBook(book.imagepath, book.title, authors ? authors.name : "Auhtor undefined" , "theme", book.id))      
+            const title = book.title.length > 30 ? book.title.slice(0, 30) + "..." : book.title
+            ul.appendChild(buildBook(book.imagepath, title, authors ? authors.name : "Auhtor undefined" , "theme", book.id))      
         });
     } 
 }
-
+const main = document.querySelector("main")
+const loading = document.querySelector("span[class='loading']")
 const fetchBooksSearch = async (query: string) => {
-    const res = await fetch("http://localhost:3333/search/?query="+query)
-    const books = await res.json()
-    if(ul!=null) {
-        ul.innerHTML = ""
-        books.forEach((book: Book) => {
-            const authors = JSON.parse(book.author)[0]
-            ul.appendChild(buildBook(book.imagepath, book.title, authors ? authors.name : "Auhtor undefined" , "theme", book.id))      
-        });
+    if (ul!=null) ul.innerHTML = ""
+    if (loading!=null){
+        loading.textContent = "Loading..."
+        main?.appendChild(loading)
+        const res = await fetch("http://localhost:3333/search/?query="+query)
+        const books = await res.json()
+        if(ul!=null && books.length>0) {
+            books.forEach((book: Book) => {
+                const authors = JSON.parse(book.author)[0]
+                const title = book.title.length > 30 ? book.title.slice(0, 30) + "..." : book.title
+                ul.appendChild(buildBook(book.imagepath, title, authors ? authors.name : "Auhtor undefined" , "theme", book.id))      
+            });
+        }
+        loading.innerHTML = ""
     }
+}
+
+// Redirect to book page
+export const redirectToBookPage = (bookId: number) => {
+    const bookPageUrl = `/src/pages/book.html?bookId=${bookId}`;
+    window.location.href = bookPageUrl;
 }
 
 window.addEventListener("load", fetchBooks)
@@ -88,4 +94,10 @@ window.addEventListener("scroll", () => {
         page++
         fetchBooks()
     }
+})
+
+// Onclick h2
+const h2 = document.querySelector("h2")
+h2?.addEventListener("click", () => {
+    window.location.href = "/";
 })
