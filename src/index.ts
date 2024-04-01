@@ -1,4 +1,5 @@
 import { Book } from "./types.js"
+import { getCompletion } from "./auto-completion.js";
 
 
 // Debounce function
@@ -92,6 +93,7 @@ export const redirectToBookPage = (bookId: number) => {
 window.addEventListener("load", () =>{
     if(input!=null && (input as HTMLInputElement).value.length>0) fetchBooksSearch((input as HTMLInputElement).value)
     else fetchBooks()
+    setUpSearchInputListener()
 })
 const showmoreButton = document.querySelector("button")
 showmoreButton?.addEventListener("click", () => {
@@ -110,3 +112,41 @@ const h2 = document.querySelector("h2")
 h2?.addEventListener("click", () => {
     window.location.href = "/";
 })
+
+const setUpSearchInputListener = () => {
+    // search input id is search
+    const searchInput: HTMLInputElement = document.querySelector("#search") as HTMLInputElement
+    let previousValue: string = searchInput.value;
+    let completions: string[] = [];
+    searchInput.addEventListener('input', async (event: Event) => {
+        const currentValue: string = searchInput.value;
+        if (currentValue.length == 3) {
+            // première requette d'autocomplétion (3 caractères)
+            completions = await getCompletion(currentValue)
+            return;
+        }
+
+        if (currentValue.length < 3) {
+            // on vide les suggestions
+            completions = [];
+            return;
+        }
+        
+        if (currentValue.length > previousValue.length) {
+            console.log("forward");
+            // filter completions
+            completions = completions.filter((completion: string) => completion.startsWith(currentValue))
+        } else {
+            console.log("backward");
+            completions = await getCompletion(currentValue)
+        }
+        previousValue = currentValue;
+        const searchInputCompletionElement: HTMLInputElement = document.querySelector("#words") as HTMLInputElement
+        completions.forEach((completion: string) => {
+            const option = document.createElement("option")
+            option.value = completion
+            searchInputCompletionElement.appendChild(option)
+        })
+    })
+}
+

@@ -1,11 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./src/style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet" href="./src/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
     <title>Vite + TS</title>
   </head>
   <body>
@@ -14,7 +17,15 @@
         <form action="">
           <div class="search">
             <h2>Gogole</h2>
-            <input type="search" name="" id="" placeholder="Rechercher un livre">
+            <input
+              type="search"
+              list="words"
+              id="search"
+              placeholder="Rechercher un livre"
+            />
+            <datalist id="words">
+              <!-- <option value="Pomme"></option> -->
+            </datalist>
           </div>
         </form>
       </header>
@@ -32,16 +43,12 @@
           </li> -->
         </ul>
         <button>
-          <span class="material-symbols-outlined">
-            expand_more
-          </span>
-          <span class="showmore-txt">
-            Show more
-          </span>
+          <span class="material-symbols-outlined"> expand_more </span>
+          <span class="showmore-txt"> Show more </span>
         </button>
       </main>
     </div>
   </body>
-  
+
   <script type="module" src="src/index.ts"></script>
 </html>
