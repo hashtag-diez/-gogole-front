@@ -118,35 +118,40 @@ const setUpSearchInputListener = () => {
     const searchInput: HTMLInputElement = document.querySelector("#search") as HTMLInputElement
     let previousValue: string = searchInput.value;
     let completions: string[] = [];
-    searchInput.addEventListener('input', async (event: Event) => {
+    const searchInputCompletionElement: HTMLOptionElement = document.querySelector("#words") as HTMLOptionElement
+    searchInput.addEventListener('input', async (_: Event) => {
         const currentValue: string = searchInput.value;
         if (currentValue.length == 3) {
             // première requette d'autocomplétion (3 caractères)
             completions = await getCompletion(currentValue)
+            previousValue = currentValue;
+            updateOptionElement(searchInputCompletionElement, completions)
             return;
         }
 
         if (currentValue.length < 3) {
             // on vide les suggestions
             completions = [];
+            updateOptionElement(searchInputCompletionElement, completions)
+            previousValue = currentValue;
             return;
         }
         
         if (currentValue.length > previousValue.length) {
-            console.log("forward");
-            // filter completions
             completions = completions.filter((completion: string) => completion.startsWith(currentValue))
         } else {
-            console.log("backward");
             completions = await getCompletion(currentValue)
         }
         previousValue = currentValue;
-        const searchInputCompletionElement: HTMLInputElement = document.querySelector("#words") as HTMLInputElement
-        completions.forEach((completion: string) => {
-            const option = document.createElement("option")
-            option.value = completion
-            searchInputCompletionElement.appendChild(option)
-        })
+        updateOptionElement(searchInputCompletionElement, completions)
     })
 }
 
+const updateOptionElement = (optionElement: HTMLOptionElement, values: string[]) => {
+    optionElement.innerHTML = ""; // clear all options first then add new options
+    values.forEach((value: string) => {
+        const option = document.createElement("option")
+        option.value = value
+        optionElement.appendChild(option)
+    })
+}
