@@ -8,3 +8,8 @@ export type Book = {
     filepath: string,
     subjects: string
 }
+
+export type Completion = {
+    id: number,
+    word: string
+}

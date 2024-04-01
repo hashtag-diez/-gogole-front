@@ -1,11 +1,16 @@
+import { Completion } from "./types"
 /** Find the completion of a word
  * @param word string - The word to find the completion
  * @returns string[] - The completion of the word
  */
 export const getCompletion = async (word: string): Promise<string[]> => {
-    const url = `localhost:<port>/completion?query=${word}`
-    //const res = await fetch(url)
-    //return await res.json()
+    const url = `http://localhost:3333/completion?query=${word}`
+    const res = await fetch(url)
+    const json: Completion[] = await res.json()
+    const completions = json.map((completion: Completion) => {
+        return completion.word
+    })
+    return completions
     
 
     
